@@ -1,0 +1,190 @@
+### 
+### Events about the Roman Revolution
+### 
+### EventID's 
+### 100000000			| Kicker Event
+### 100000001-100000007	| Tuscan Revolution
+### 100000011-100000012 | Foreign Response to Roman Republic
+
+# EventID = 100000000
+# Assassination of Pellegrino Rossi
+country_event = {
+	id = 100000000
+	title = "EVTNAME100000000"
+	desc = "EVTDESC100000000"
+	picture = "News"
+	
+	trigger = {
+		tag = PAP
+		liberal = 25
+		militancy = 3
+		year = 1840
+		NOT = {
+			year = 1855
+		}
+	}
+	
+	fire_only_once = yes
+	
+	mean_time_to_happen =  {
+		years = 4
+
+		modifier = {
+			factor = 0.90 #increase likelihood to happen
+			liberal = 30
+		}
+
+		modifier = {
+			factor = 0.90 #increase likelihood to happen
+			liberal = 35
+		}
+
+		modifier = {
+			factor = 0.85 #increase likelihood to happen
+			militancy = 4
+		}
+
+		modifier = {
+			factor = 0.85 #increase likelihood to happen
+			militancy = 5
+		}
+
+		modifier = {
+			factor = 0.50 #increase likelihood to happen
+			year = 1848
+		}
+	}
+	
+	option = {
+		name = "EVTOPTA100000000"
+		
+		any_state = {
+			limit = {
+				NOT = {
+					is_colonial = yes
+				}
+			}
+		
+			any_pop = {
+				ideology = {
+					value = liberal
+					factor = 0.2
+				}
+				militancy = 4
+			}
+		}
+		
+		set_country_flag = rossi_dead
+	}
+}
+
+# EventID = 100000011
+# Pope Restored
+country_event = {
+	id = 100000011
+	title = "EVTNAME100000011"
+	desc = "EVTDESC100000011"
+	#news = yes
+	#news_title = "EVTNAME100000011_NEWS_TITLE"
+	#news_desc_long = "EVTDESC100000011_NEWS_LONG"
+	#news_desc_medium = "EVTDESC100000011_NEWS_MEDIUM"
+	#news_desc_short = "EVTDESC100000011_NEWS_SHORT"
+	picture = "News"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA100000011" 
+		
+		# Restoration of the old policies
+		government = absolute_monarchy
+		ruling_party_ideology = reactionary
+		political_reform = none_voting
+		political_reform = appointed
+		political_reform = no_meeting
+		political_reform = state_press
+		political_reform = no_trade_unions
+		political_reform = underground_parties
+		social_reform = no_minimum_wage
+		social_reform = no_work_hour_limit
+		social_reform = no_safety
+		social_reform = no_subsidies
+		social_reform = no_pensions
+		social_reform = no_health_care
+		social_reform = no_schools
+		nationalvalue = nv_order
+		
+		# Mixed Reactions
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			scaled_militancy = {
+				ideology = liberal
+				factor = 6
+			}
+			
+			scaled_militancy = {
+				ideology = conservative
+				factor = -6
+			}
+			
+			scaled_militancy = {
+				ideology = reactionary
+				factor = -8
+			}
+		}
+		
+		# Garibaldi will not support the Pope
+		# kill_leader = "Guiseppe Garibaldi"
+		
+		set_country_flag = pope_restored
+		clr_country_flag = run_pope_run
+	}
+}
+
+# EventID = 100000012
+# Casus Belli to restore the Pope
+country_event = {
+	id = 100000012
+	title = "EVTNAME100000012"
+	desc = "EVTDESC100000012"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA100000012".
+
+		
+		casus_belli = {
+			target = PAP
+			type = reinstall_papacy_cb
+			months = 12
+		}
+		
+		ai_chance = {
+			factor = 70
+		}
+	}
+	
+	option = {
+		name = "EVTOPTB100000012"
+		
+		any_pop = {
+			consciousness = -1
+			militancy = -1
+		}
+		
+		ai_chance = {
+			factor = 30
+			modifier = {
+				factor = 50
+				militancy = 5
+			}
+		}
+	}
+}
+	

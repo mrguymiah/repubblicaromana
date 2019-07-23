@@ -1,0 +1,1225 @@
+# EventID = 100000021
+# Tuscan Riots
+country_event = {
+	id = 100000021
+	title = "EVTNAME100000021"
+	desc = "EVTDESC100000021"
+	picture = "News"
+	
+	trigger = {
+		tag = TUS
+		PAP = {
+			has_country_flag = run_pope_run
+		}
+	}
+	
+	fire_only_once = yes
+	
+	mean_time_to_happen =  {
+		months = 1
+	}
+	
+	immediate = {
+		set_country_flag = tuscan_riots
+	}
+	
+	option = {
+		name = "EVTOPTA100000021"
+		
+		745 = {
+			add_province_modifier = {
+				name = liberal_agitation
+				duration = 365
+			}
+			any_pop = {
+				limit = {
+					NOT = {
+						strata = rich
+					}
+				}
+				
+				ideology = {
+					value = liberal
+					factor = 0.3
+				}
+			}
+		}
+		any_pop = {
+			limit = {
+				location= {
+					is_colonial = no
+				}
+			}
+		
+			ideology = {
+				value = liberal
+				factor = 0.2
+			}
+			scaled_militancy = {
+				ideology = liberal
+				factor = 6
+			}
+		}
+		
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+
+# EventID = 100000022
+# Florentine Revolution
+country_event = {
+	id = 100000022
+	title = "EVTNAME100000022"
+	desc = "EVTDESC100000022"
+	picture = "News"
+	
+	trigger = {
+		tag = TUS
+		has_country_flag = tuscan_riots
+		PAP = {
+			has_country_flag = run_pope_run
+		}
+	}
+	
+	fire_only_once = yes
+	
+	mean_time_to_happen = {
+		months = 6 
+	}
+	
+	# The Duke Flees - Leopold flees to Gaeta and the liberals establish a national assembly. Their first action is to reform the government and petition the Roman Republic for statehood.
+	option = {
+		name = "EVTOPTA100000022"
+		
+		# Send the Republic the event to respond
+		# 1. Puppetize the Tuscan Republic
+		# 2. Don't
+		PAP = {
+			country_event = 100000023
+		}
+		
+		# Change the Government
+		government = democracy
+		ruling_party_ideology = liberal
+		political_reform = wealth_voting
+		political_reform = state_equal_weight			
+		political_reform = proportional_representation
+		political_reform = yes_meeting
+		political_reform = free_press
+		nationalvalue = nv_equality
+		
+		# Give the former sphere owner a casus belli 
+		sphere_owner = {
+			casus_belli = {
+				target = THIS
+				type = add_to_sphere
+				months = 12
+			}
+		}
+		
+		# Remove Tuscany from sphere
+		sphere_owner = {
+			diplomatic_influence = {
+				who = this
+				value = -150
+			}
+		}
+		
+		# Remove all alliances and release all puppets
+		neutrality = yes
+		
+		# All populations in non-colonial states
+		any_pop = {
+			limit = {
+				location= {
+					is_colonial = no
+				}
+			}
+		
+			# Increase the amount of Liberals
+			ideology = {
+				value = liberal
+				factor = 0.2
+			}
+			
+			# Decrease Liberal militancy		
+			scaled_militancy = {
+				ideology = liberal
+				factor = -4
+			}
+			
+			# Increase Conservative and Reactionary militancy
+			scaled_militancy = {
+				ideology = conservative
+				factor = 3
+			}	
+			scaled_militancy = {
+				ideology = reactionary
+				factor = 4
+			}
+		}
+		
+		ai_chance = {
+			factor = 70
+			
+			# Higher Militancy makes Leopold prone to cowardice
+			modifier = {
+				factor = 1.2
+				militancy = 6
+			}
+			modifier = {
+				factor = 1.2
+				militancy = 8
+			}
+		}
+	}
+	
+	# The Duke Concedes - Rather than lose his throne, Leopold concedes to the Liberal demands and sends a petition to the Roman Republic to request vassalage.
+	option = {
+		name = "EVTOPTB100000022"
+		
+		# Send the petition to the Republic. Their options;
+		# 1. Accept, puppetizing Tuscany
+		# 2. Decline, stating a refusal to accept a Hapsburg ruler in Italy
+		# 3. Decline, for whatever reason.
+		PAP = {
+			country_event = 100000024
+		}
+		
+		# Change the Government
+		government = hms_government
+		ruling_party_ideology = liberal
+		political_reform = wealth_weighted_voting
+		political_reform = state_equal_weight
+		political_reform = yes_meeting
+		political_reform = censored_press
+		
+		# All pops in non-colonial states
+		any_pop = {
+			limit = {
+				location= {
+					is_colonial = no
+				}
+			}
+			
+			# Increase the amount of Liberals
+			ideology = {
+				value = liberal
+				factor = 0.1
+			}
+			
+			# Decrease Liberal militancy		
+			scaled_militancy = {
+				ideology = liberal
+				factor = -2
+			}
+			
+			# Increase Conservative and Reactionary militancy
+			scaled_militancy = {
+				ideology = conservative
+				factor = 1
+			}	
+			scaled_militancy = {
+				ideology = reactionary
+				factor = 2
+			}
+		}
+		
+		ai_chance = {
+			factor = 20
+			
+			# Higher Militancy makes Leopold prone to cowardice
+			modifier = {
+				factor = 0.9
+				militancy = 6
+			}
+			modifier = {
+				factor = 0.9
+				militancy = 8
+			}
+		}
+	}
+	
+	# The Duke Defiant - Leopold's spine grew three sizes this day as he defies the Liberal agitators, standing by his government (and extended family).
+	option = {
+		name = "EVTOPTC100000022"
+		
+		# The Liberals send a petition for the Republic to come and oust the duke
+		PAP = {
+			country_event = 100000025
+		}
+		
+		# Give the capital the liberal_agitation modifier
+		random_owned = {
+			limit = {
+				is_capital = yes
+			}
+			add_province_modifier = {
+				name = liberal_agitation
+				duration = 365
+			}
+		}
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location= {
+					is_colonial = no
+				}
+			}
+			
+			# Increase Liberal militancy
+			scaled_militancy = {
+				ideology = liberal
+				factor = 6
+			}
+			
+			# Decrease Conservative and Reactionary militancy
+			scaled_militancy = {
+				ideology = conservative
+				factor = -3
+			}
+			scaled_militancy = {
+				ideology = reactionary
+				factor = -5
+			}
+		}
+		
+		ai_chance = {
+			factor = 10
+			
+			# Higher Militancy makes Leopold prone to cowardice
+			modifier = {
+				factor = 0.8
+				militancy = 6
+			}
+			modifier = {
+				factor = 0.8
+				militancy = 8
+			}
+		}
+	}
+}
+
+# EventID = 100000023
+# Florentine Revolution - Duke Flees - The newly instated Tuscan Republic has sent a petition for the Roman Republic to take them as a client state.
+country_event = {
+	id = 100000023
+	title = "EVTNAME100000023"
+	desc = "EVTDESC100000023"
+	picture = "News"
+	
+	is_triggered_only = yes
+	
+	# The Republic Accepts - Tuscany becomes a client state to the Republic
+	option = {
+		name = "EVTOPTA100000023"
+		
+		# Inform Tuscany the Republic has accepted
+		TUS = {
+			country_event = 100000028
+		}
+		
+		# This brings honor to the Republic, but people are wary of the expansion
+		prestige = 5
+		badboy = 3
+		
+		# Tuscany becomes a puppet to the Republic
+		create_vassal = TUS
+		
+		# Give Austria a casus belli to release their cousin's dukedom
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Decrease Liberal militancy and consciousness
+			scaled_militancy = {
+				ideology = liberal
+				factor = -1
+			}
+			scaled_consciousness = {
+				ideology = liberal
+				factor = -1
+			}
+		}
+		
+		ai_chance = {
+			factor = 90
+			
+			# AI won't cause containment wars
+			modifier = {
+				factor = 0
+				badboy = 0.88
+			}
+		}
+	}
+	
+	# The Republic Declines - The Republic, fearing international disapproval, decline the petition.
+	option = {
+		name = "EVTOPTB100000023"
+		
+		# Inform Tuscany that the Republic has declined
+		TUS = {
+			country_event = 100000026
+		}
+		
+		# Take a hit to national prestige
+		prestige = -10
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Increase Liberal militancy and consciousness 
+			scaled_militancy = {
+				ideology = liberal
+				factor = 2
+			} 
+			scaled_consciousness = {
+				ideology = liberal
+				factor = 2
+			}
+		}
+		
+		ai_chance = {
+			factor = 10
+		}
+	}
+}
+
+# EventID = 100000024
+# Florentine Revolution - Duke Concedes - The Duke has conceded to Liberal demands and wishes to submit in vassalage to the Republic
+country_event = {
+	id = 100000024
+	title = "EVTNAME100000024"
+	desc = "EVTDESC100000024"
+	picture = "News"
+	
+	is_triggered_only = yes
+	
+	# The Republic Accepts - Tuscany becomes a vassal state to the Republic
+	option = {
+		name = "EVTOPTA100000024"
+		
+		# Inform Tuscany the Republic has accepted
+		TUS = {
+			country_event = 100000029
+		}
+		
+		# This brings honor to the Republic, but people are wary of the expansion
+		prestige = 5
+		badboy = 3
+		
+		# Tuscany becomes a puppet to the Republic
+		create_vassal = TUS
+		
+		# Give Austria a casus belli to release their cousin's dukedom
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Decrease Liberal militancy and consciousness
+			scaled_militancy = {
+				ideology = liberal
+				factor = -1
+			}
+			scaled_consciousness = {
+				ideology = liberal
+				factor = -1
+			}
+		}
+		
+		ai_chance = {
+			factor = 70
+			
+			# AI won't cause containment wars
+			modifier = {
+				factor = 0
+				badboy = 0.88
+			}
+		}
+	}
+	
+	# The Republic denies the petition, going to war with Tuscany. No Hapsburg will rule in Italy! 
+	option = {
+		name = "EVTOPTB100000024"
+		
+		# Set the Flag so that we can properly set the new government if Republic wins.
+		TUS = {
+			set_country_flag = duke_defiant
+		}
+		
+		# Inform Tuscany that the Republic has declined and declared war!
+		TUS = {
+			country_event = 100000027
+		}
+		
+		# The world isn't happy about this
+		badboy = 6
+		
+		# Start the War with Tuscany as target
+		any_country = {
+			limit = {
+				tag = TUS
+			}
+			
+			war = {
+				target = PAP
+			
+				# The Republic will make a puppet of Tuscany
+				attacker_goal = {
+					casus_belli = reinstall_papacy_cb
+				}
+			
+				# Tuscany will reinstall the Papacy
+				defender_goal = {
+					casus_belli = make_puppet
+				}
+			
+				# Do not call allies into this conflict
+				call_ally = no
+			}
+		}
+		
+		# Any pops in non-colonial state,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Decrease Liberal Militancy
+			scaled_militancy = {
+				ideology = liberal
+				factor = -2
+			}
+		}
+		
+		ai_chance = {
+			factor = 20
+			
+			# AI won't trigger containment wars for this.
+			modifier = {
+				factor = 0
+				badboy = 0.76
+			}
+		}
+	}
+	
+	# The Republic Declines - The Republic, fearing international disapproval, decline the petition.
+	option = {
+		name = "EVTOPTC100000024"
+		
+		# Inform Tuscany that the Republic has declined
+		TUS = {
+			country_event = 100000026
+		}
+		
+		# Take a hit to national prestige
+		prestige = -10
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Increase Liberal militancy and consciousness 
+			scaled_militancy = {
+				ideology = liberal
+				factor = 1
+			} 
+			scaled_consciousness = {
+				ideology = liberal
+				factor = 1
+			}
+		}
+		
+		ai_chance = {
+			factor = 10
+		}
+	}
+}
+
+# EventID = 100000025
+# Florentine Revolution - Duke Defiant - Rebellion has broken out in Florence, and the Liberal elite has sent a petition for the Roman Republic to step in and make a client state of Tuscany.
+country_event = {
+	id = 100000025
+	title = "EVTNAME100000025"
+	desc = "EVTDESC100000025"
+	picture = "News"
+	
+	is_triggered_only = yes
+	
+	# The Republic accepts the petition, going to war with Tuscany
+	option = {
+		name = "EVTOPTA100000025"
+		
+		# Set the Flag so that we can properly set the new government if Republic wins.
+		TUS = {
+			set_country_flag = duke_defiant
+			country_event = 100000031
+		}
+		
+		# The world isn't happy about this
+		badboy = 5
+		
+		# Start the War with Tuscany as target
+		any_country = {
+			limit = {
+				tag = TUS
+			}
+			
+			war = {
+				target = PAP
+			
+				# The Republic will make a puppet of Tuscany
+				attacker_goal = {
+					casus_belli = reinstall_papacy_cb
+				}
+			
+				# Tuscany will reinstall the Papacy
+				defender_goal = {
+					casus_belli = make_puppet
+				}
+			
+				# Do not call allies into this conflict
+				call_ally = no
+			}
+		}
+		
+		# Any pops in non-colonial state,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Decrease Liberal Militancy
+			scaled_militancy = {
+				ideology = liberal
+				factor = -2
+			}
+		}
+		
+		ai_chance = {
+			factor = 85
+			
+			# AI won't trigger containment wars for this.
+			modifier = {
+				factor = 0
+				badboy = 0.8
+			}
+		}
+	}
+	
+	# The Republic declines, not wanting to involve itself in Tuscany's internal politics
+	option = {
+		name = "EVTOPTB100000025"
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Increase Liberal militancy
+			scaled_militancy = {
+				ideology = liberal
+				factor = 4
+			}
+		}
+		
+		ai_chance = {
+			factor = 15
+		}
+	}
+}
+
+# EventID = 100000026
+# Florentine Revolution - Duke [Any] - The Republic has denied the petition for client status/vassalage to avoid international infamy.
+country_event = {
+	id = 100000026
+	title = "EVTNAME100000026"
+	desc = "EVTDESC100000026"
+	picture = "News"
+	
+	is_triggered_only = yes
+	
+	# Accept their decision
+	option = {
+		name = "EVTOPTA100000026"
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Decrease Liberal militancy and consciousness
+			scaled_militancy = {
+				ideology = liberal
+				factor = -2
+			}
+			scaled_consciousness = {
+				ideology = liberal
+				factor = -2
+			}
+		}
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+				
+				# AND is lower OR middle class,
+				OR = {
+					strata = poor
+					strata = middle
+				}
+			}
+			
+			# Increase the amount of Conservatives
+			ideology = {
+				value = conservative
+				factor = 0.2
+			}
+		}
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+				
+				# AND is upper class,
+				strata = rich
+			}
+			
+			# Increase the amount of Reactionaries
+			ideology = {
+				value = reactionary
+				factor = 0.1
+			}
+		}
+		
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+
+# EventID = 100000027
+# Florentine Revolution - Duke Concedes - The Republic has decided to intervene in the Florentine Revolution.
+country_event = {
+	id = 100000027
+	title = "EVTNAME100000027"
+	desc = "EVTDESC100000027"
+	picture = "News"
+	
+	is_triggered_only = yes
+	
+	# Defend Tuscany!
+	option = {
+		name = "EVTOPTA100000027"
+		
+		prestige = 10
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Decrease Liberal militancy and consciousness
+			scaled_militancy = {
+				ideology = liberal
+				factor = -4
+			}
+			scaled_consciousness = {
+				ideology = liberal
+				factor = -4
+			}
+		}
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+				
+				# AND is lower OR middle class,
+				OR = {
+					strata = poor
+					strata = middle
+				}
+			}
+			
+			# Increase the amount of Conservatives
+			ideology = {
+				value = conservative
+				factor = 0.3
+			}
+			
+			# Increase the amount of Reactionaries
+			ideology = {
+				value = reactionary
+				factor = 0.05
+			}
+		}
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+				
+				# AND is upper class,
+				strata = rich
+			}
+			
+			# Increase the amount of Conservatives
+			ideology = {
+				value = conservative
+				factor = 0.1
+			}
+			
+			# Increase the amount of Reactionaries
+			ideology = {
+				value = reactionary
+				factor = 0.2
+			}
+		}
+		
+		ai_chance = {
+			factor = 65
+		
+			# AI is more likely to fight if in a sphere
+			modifier = {
+				factor = 1.5
+				part_of_sphere = yes
+			}
+		}
+	}
+	
+	# Surrender to Roman demands
+	option = {
+		name = "EVTOPTB100000027"
+		
+		# Give control of all provinces to the Republic
+		any_owned = {
+			change_controller = PAP
+		}
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Decrease Liberal militancy and consciousness
+			scaled_militancy = {
+				factor = -2
+				ideology = liberal
+			}
+			scaled_consciousness = {
+				factor = 2
+				ideology = liberal
+			}
+		}
+		
+		ai_chance = {
+			factor = 35
+		
+			# AI is more likely to surrender if not in a sphere
+			modifier = {
+				factor = 1.5
+				part_of_sphere = no
+			}
+		}
+	}
+}
+
+# EventID = 100000028
+# Florentine Revolution - Duke Flees - The Republic accepts the petition
+country_event = {
+	id = 100000028
+	title = "EVTNAME100000028"
+	desc = "EVTDESC100000028"
+	picture = "News"
+	
+	is_triggered_only = yes
+	
+	# Accept their decision
+	option = {
+		name = "EVTOPTA100000028"
+		
+		# Part of something greater
+		prestige = 5
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Decrease Liberal militancy and consciousness
+			scaled_militancy = {
+				ideology = liberal
+				factor = -2
+			}
+		}
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+				
+				# AND is upper class,
+				strata = rich
+			}
+			
+			# Increase the amount of Conservatives
+			ideology = {
+				value = conservative
+				factor = 0.1
+			}
+			
+			# Increase the amount of Reactionaries
+			ideology = {
+				value = reactionary
+				factor = 0.05
+			}
+		}
+		
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+
+# EventID = 100000029
+# Florentine Revolution - Duke Concedes - The Republic accepts the request
+country_event = {
+	id = 100000029
+	title = "EVTNAME100000029"
+	desc = "EVTDESC100000029"
+	picture = "News"
+	
+	is_triggered_only = yes
+	
+	# Accept their decision
+	option = {
+		name = "EVTOPTA100000029"
+		
+		# Part of something greater
+		prestige = 5
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Decrease Liberal militancy and consciousness
+			scaled_militancy = {
+				ideology = liberal
+				factor = -2
+			}
+		}
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+				
+				# AND is upper class,
+				strata = rich
+			}
+			
+			# Increase the amount of Conservatives
+			ideology = {
+				value = conservative
+				factor = 0.2
+			}
+			
+			# Increase the amount of Reactionaries
+			ideology = {
+				value = reactionary
+				factor = 0.1
+			}
+		}
+		
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+
+# EventID = 100000030
+# Florentine Revolution - Duke Defiant - Republican Victory
+country_event = {
+	id = 100000030
+	title = "EVTNAME100000030"
+	desc = "EVTDESC100000030"
+	picture = "News"
+	
+	trigger = {
+		# Event only for Tuscany
+		tag = TUS
+		
+		# Make sure the Republic attempted to oust the Duke
+		has_country_flag = duke_defiant
+		
+		# Make sure PAP is currently the Roman Republic
+		PAP = {
+			has_country_flag = run_pope_run
+		}
+		
+		# Make sure they have recently lost the war against the Republic, but are not currently a democracy
+		has_recently_lost_war = yes
+		NOT = {
+			government = democracy
+			war_with = PAP
+		}
+	}
+	
+	fire_only_once = yes
+	
+	# Accept their decision
+	option = {
+		name = "EVTOPTA100000030"
+		
+		# Change the Government
+		government = democracy
+		ruling_party_ideology = liberal
+		political_reform = universal_voting
+		political_reform = population_equal_weight
+		political_reform = proportional_representation
+		political_reform = yes_meeting
+		political_reform = free_press
+		social_reform = low_schools
+		nationalvalue = nv_equality
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Decrease Liberal militancy and consciousness
+			scaled_militancy = {
+				ideology = liberal
+				factor = -1
+			}
+		}
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+				
+				# AND is upper class,
+				strata = rich
+			}
+			
+			# Increase the amount of Conservatives
+			ideology = {
+				value = conservative
+				factor = 0.2
+			}
+			
+			# Increase the amount of Reactionaries
+			ideology = {
+				value = reactionary
+				factor = 0.1
+			}
+		}
+		
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+
+# EventID = 100000031
+# Florentine Revolution - Duke Defiant - The Republic has decided to intervene in the Florentine Revolution.
+country_event = {
+	id = 100000031
+	title = "EVTNAME100000031"
+	desc = "EVTDESC100000031"
+	picture = "News"
+	
+	is_triggered_only = yes
+	
+	# Defend Tuscany!
+	option = {
+		name = "EVTOPTA100000031"
+		
+		prestige = 10
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Decrease Liberal militancy and consciousness
+			scaled_militancy = {
+				ideology = liberal
+				factor = -4
+			}
+			scaled_consciousness = {
+				ideology = liberal
+				factor = -4
+			}
+		}
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+				
+				# AND is lower OR middle class,
+				OR = {
+					strata = poor
+					strata = middle
+				}
+			}
+			
+			# Increase the amount of Conservatives
+			ideology = {
+				value = conservative
+				factor = 0.3
+			}
+			
+			# Increase the amount of Reactionaries
+			ideology = {
+				value = reactionary
+				factor = 0.05
+			}
+		}
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+				
+				# AND is upper class,
+				strata = rich
+			}
+			
+			# Increase the amount of Conservatives
+			ideology = {
+				value = conservative
+				factor = 0.1
+			}
+			
+			# Increase the amount of Reactionaries
+			ideology = {
+				value = reactionary
+				factor = 0.2
+			}
+		}
+		
+		ai_chance = {
+			factor = 65
+		
+			# AI is more likely to fight if in a sphere
+			modifier = {
+				factor = 1.5
+				part_of_sphere = yes
+			}
+		}
+	}
+	
+	# Surrender to Roman demands
+	option = {
+		name = "EVTOPTB100000031"
+		
+		# Give control of all provinces to the Republic
+		any_owned = {
+			change_controller = PAP
+		}
+		
+		# All pops in non-colonial states,
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+			}
+			
+			# Decrease Liberal militancy and consciousness
+			scaled_militancy = {
+				factor = -2
+				ideology = liberal
+			}
+			scaled_consciousness = {
+				factor = 2
+				ideology = liberal
+			}
+		}
+		
+		ai_chance = {
+			factor = 35
+		
+			# AI is more likely to surrender if not in a sphere
+			modifier = {
+				factor = 1.5
+				part_of_sphere = no
+			}
+		}
+	}
+}

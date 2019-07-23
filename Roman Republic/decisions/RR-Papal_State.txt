@@ -1,0 +1,378 @@
+political_decisions = {
+
+	# Pope flees Rome, instating the Roman Republic
+	flight_to_gaeta = {
+		picture = flight_to_gaeta
+	
+		potential = {
+			tag = PAP
+			government = absolute_monarchy
+			NOT = {
+				has_country_flag = run_pope_run
+			}
+			has_country_flag = rossi_dead
+		}
+		
+		allow = {
+			liberal = 35
+			militancy = 3
+		}
+		
+		effect = {
+			# Change the Government
+			government = democracy
+			ruling_party_ideology = liberal
+			political_reform = universal_voting
+			political_reform = population_equal_weight
+			political_reform = proportional_representation
+			political_reform = yes_meeting
+			political_reform = free_press
+			social_reform = low_schools
+			nationalvalue = nv_equality
+			
+			# Can't please everyone
+			any_pop = {
+				limit = {
+					location= {
+						is_colonial = no
+					}
+				}
+				
+				#aristocrats = {
+				#	militancy = 4
+				#}
+				
+				#clergymen = {
+				#	militancy = 4
+				#}
+				
+				scaled_militancy = {
+					ideology = liberal
+					factor = -8
+				}
+				
+				scaled_militancy = {
+					ideology = conservative
+					factor = 3
+				}
+				
+				scaled_militancy = {
+					ideology = reactionary
+					factor = 4
+				}
+			}
+			
+			# Remove existing relations
+			neutrality = yes
+			sphere_owner = {
+				diplomatic_influence = {
+					who = this
+					value = -150
+				}
+			}
+			
+			# Allow Great Power Catholics to declare war for the Pope's Restoration
+			any_country = {
+				limit = {
+					OR = {
+						AND = {
+							is_greater_power = yes
+							pop_majority_religion = catholic
+						}
+						tag = SIC
+					}
+				}
+				
+				country_event = 100000012
+			}
+			
+			# Set the Flag
+			set_country_flag = run_pope_run
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	# Guiseppe Garibaldi forms the Italian Legion, the Republic can fund it
+	italian_legion = {
+		picture = italian_legion
+		
+		potential = {
+			tag = PAP
+			government = democracy
+			has_country_flag = run_pope_run
+			NOT = {
+				has_country_flag = italian_legion
+			}
+		}
+		
+		allow = {
+			money = 10000
+		}
+		
+		effect = {
+			# National Pride doesn't feed empty bellies
+			treasury = -10000
+			
+			# Sign Garibaldi up!
+			define_general = {
+				name = "Guiseppe Garibaldi"
+				personality = audacious
+				background = school_of_the_bayonet
+			}
+			
+			# Give the Legion Modifier
+			add_country_modifier = {
+				name = garibaldi_legion
+				duration = 9125
+			}
+			
+			# Buying supplies
+			ammunition = 500
+			small_arms = 500
+			canned_food = 1000
+			regular_clothes = 250
+			
+			# Set the flag to prevent repeats
+			set_country_flag = italian_legion
+		}
+		
+		ai_will_do = {
+			factor = 1
+			
+			# Ai won't bankrupt itself for this
+			modifier = {
+				factor = 0
+				NOT = {
+					money = 20000
+				}
+			}
+		}
+	}
+
+	# Seize the Church Lands
+	PAP_church_land_seizure = {
+		picture = PAP_church_land_seizure
+		
+		potential = {
+			tag = PAP
+			government = democracy
+			has_country_flag = run_pope_run
+			NOT = {
+				has_country_flag = PAP_church_land_seized
+			}
+		}
+		
+		allow = {
+		
+		}
+		
+		effect = {
+			# National Pride doesn't feed empty bellies
+			treasury = 15000
+		
+			# This doesn't look good...
+			badboy = 3
+			
+			# The Church does not approve
+			any_pop = {
+				limit = {
+					location= {
+						is_colonial = no
+					}
+				}
+				
+				clergymen = {
+					militancy = 4
+				}
+			}
+			
+			# The seizures weaken the clergy
+			add_country_modifier = {
+				name = weakened_clergy
+				duration = 1825
+			}
+			
+			# Set the flag to prevent repeats
+			set_country_flag = PAP_church_land_seized
+		}
+		
+		ai_will_do = {
+			factor = 1
+			
+			# Ai won't spark containment wars over this
+			modifier = {
+				factor = 0
+				badboy = 0.88
+			}
+		}
+	}
+	
+	# Organize Emilia into a singular puppet republic.
+	organize_emilia = {
+		# picture = emilia
+		
+		potential = {
+			# Only the Roman Republic can do this
+			tag = PAP
+			has_country_flag = run_pope_run
+			
+			# Make sure Emilia doesn't exist and hasn't been previously organized
+			NOT = {
+				exists = EMI
+				has_global_flag = emilia_organized
+			}
+			
+			# Check if they have any influence in Emilia 
+			OR = {
+				any_owned_province = { is_core = LUC }
+				any_owned_province = { is_core = MOD }
+				any_owned_province = { is_core = PAR }
+				is_sphere_leader_of = LUC
+				is_sphere_leader_of = MOD
+				is_sphere_leader_of = PAR
+			}
+		}
+		
+		allow = {
+			war = no
+			is_greater_power = yes
+			PAR = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							in_sphere = THIS
+							war = no
+						}
+					}
+				}
+			}
+			MOD = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							in_sphere = THIS
+							war = no
+						}
+					}
+				}
+			}
+			LUC = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							in_sphere = THIS
+							war = no
+						}
+					}
+				}
+			}
+		}
+		
+		effect = {
+			# Make sure it only happens once
+			set_global_flag = emilia_formed
+			
+			# A bit of prestige and infamy for meddling
+			prestige = 5
+			badboy = 2
+			
+			#
+			LUC = { 
+				all_core = { 
+					remove_core = LUC
+				} 
+			}
+			MOD = { 
+				all_core = { 
+					add_core = EMI 
+					remove_core = MOD
+				} 
+			}
+			PAR = { 
+				all_core = { 
+					add_core = EMI 
+					remove_core = PAR
+				} 
+			}
+			
+			any_country = {
+				limit = {
+					OR = {
+						tag = MOD
+						tag = PAR
+					}
+					ai = yes
+					in_sphere = THIS
+				}
+				annex_to = THIS
+			}
+			
+			any_country = {
+				limit = {
+					tag = LUC
+					ai = yes
+					in_sphere = THIS
+				}
+				annex_to = TUS
+			}
+			
+			any_country = {
+				limit = {
+					NOT = { 
+						is_culture_group = italian 
+					}
+					in_sphere = THIS
+					war = no
+					any_owned_province = {
+						OR = {
+							is_core = LUC
+							is_core = MOD
+							is_core = PAR
+						}
+					}
+				}
+				any_owned = {
+					limit = {
+						OR = {
+							is_core = LUC
+							is_core = MOD
+							is_core = PAR
+						}
+					}
+					secede_province = THIS
+				}
+			}
+			
+			any_owned = {
+				limit = {
+					is_core = THIS
+					is_core = EMI
+				}
+				remove_core = EMI
+			}
+			
+			release_vassal = EMI
+			create_alliance = EMI
+			
+			diplomatic_influence = {
+				who = EMI
+				value = 400
+			}
+		}
+		ai_will_do = {
+			factor = 1
+			
+			# AI won't spark containment wars for this
+			modifier = {
+				factor = 0
+				badboy = 0.92
+			}
+		}
+	}
+}
