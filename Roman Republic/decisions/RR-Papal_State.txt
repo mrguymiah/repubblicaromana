@@ -6,9 +6,10 @@ political_decisions = {
 	
 		potential = {
 			tag = PAP
-			government = absolute_monarchy
+			government = theocracy
 			NOT = {
 				has_country_flag = run_pope_run
+				has_country_flag = pope_restored
 			}
 			has_country_flag = rossi_dead
 		}
@@ -19,8 +20,11 @@ political_decisions = {
 		}
 		
 		effect = {
+			# Clear the HPM Flag.
+			clr_country_flag = theocratic_government
+		
 			# Change the Government
-			government = democracy
+			government = democracy #changing to "government = hms_government" works, though is the weird thing.
 			ruling_party_ideology = liberal
 			political_reform = universal_voting
 			political_reform = population_equal_weight
@@ -50,7 +54,7 @@ political_decisions = {
 					ideology = liberal
 					factor = -8
 				}
-				
+			
 				scaled_militancy = {
 					ideology = conservative
 					factor = 3
@@ -78,12 +82,13 @@ political_decisions = {
 						AND = {
 							is_greater_power = yes
 							pop_majority_religion = catholic
+							capital_scope = { continent = europe }
 						}
 						tag = SIC
 					}
 				}
 				
-				country_event = 100000012
+				#country_event = 100000012
 			}
 			
 			# Set the Flag
@@ -125,7 +130,7 @@ political_decisions = {
 			
 			# Give the Legion Modifier
 			add_country_modifier = {
-				name = garibaldi_legion
+				name = rr_garibaldi_legion
 				duration = 9125
 			}
 			
@@ -177,21 +182,19 @@ political_decisions = {
 			badboy = 3
 			
 			# The Church does not approve
-			any_pop = {
+			clergymen = {
 				limit = {
 					location= {
 						is_colonial = no
 					}
 				}
 				
-				clergymen = {
-					militancy = 4
-				}
+				militancy = 8
 			}
 			
 			# The seizures weaken the clergy
 			add_country_modifier = {
-				name = weakened_clergy
+				name = rr_weakened_clergy
 				duration = 1825
 			}
 			
@@ -227,10 +230,8 @@ political_decisions = {
 			
 			# Check if they have any influence in Emilia 
 			OR = {
-				any_owned_province = { is_core = LUC }
 				any_owned_province = { is_core = MOD }
 				any_owned_province = { is_core = PAR }
-				is_sphere_leader_of = LUC
 				is_sphere_leader_of = MOD
 				is_sphere_leader_of = PAR
 			}
@@ -261,17 +262,6 @@ political_decisions = {
 					}
 				}
 			}
-			LUC = {
-				all_core = {
-					OR = {
-						owned_by = THIS
-						owner = {
-							in_sphere = THIS
-							war = no
-						}
-					}
-				}
-			}
 		}
 		
 		effect = {
@@ -283,11 +273,6 @@ political_decisions = {
 			badboy = 2
 			
 			#
-			LUC = { 
-				all_core = { 
-					remove_core = LUC
-				} 
-			}
 			MOD = { 
 				all_core = { 
 					add_core = EMI 
@@ -315,15 +300,6 @@ political_decisions = {
 			
 			any_country = {
 				limit = {
-					tag = LUC
-					ai = yes
-					in_sphere = THIS
-				}
-				annex_to = TUS
-			}
-			
-			any_country = {
-				limit = {
 					NOT = { 
 						is_culture_group = italian 
 					}
@@ -331,7 +307,6 @@ political_decisions = {
 					war = no
 					any_owned_province = {
 						OR = {
-							is_core = LUC
 							is_core = MOD
 							is_core = PAR
 						}
@@ -340,7 +315,6 @@ political_decisions = {
 				any_owned = {
 					limit = {
 						OR = {
-							is_core = LUC
 							is_core = MOD
 							is_core = PAR
 						}

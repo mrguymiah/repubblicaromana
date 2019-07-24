@@ -18,16 +18,14 @@ country_event = {
 		tag = PAP
 		liberal = 25
 		militancy = 3
-		year = 1840
-		NOT = {
-			year = 1855
-		}
+		has_country_flag = liberal_revolution_in_progress
+		government = theocracy
 	}
 	
 	fire_only_once = yes
 	
 	mean_time_to_happen =  {
-		years = 4
+		years = 1
 
 		modifier = {
 			factor = 0.90 #increase likelihood to happen
@@ -58,20 +56,18 @@ country_event = {
 	option = {
 		name = "EVTOPTA100000000"
 		
-		any_state = {
+		any_pop = {
 			limit = {
-				NOT = {
-					is_colonial = yes
+				location= {
+					is_colonial = no
 				}
 			}
-		
-			any_pop = {
-				ideology = {
-					value = liberal
-					factor = 0.2
-				}
-				militancy = 4
+			
+			ideology = {
+				value = liberal
+				factor = 0.2
 			}
+			militancy = 4
 		}
 		
 		set_country_flag = rossi_dead
@@ -97,7 +93,7 @@ country_event = {
 		name = "EVTOPTA100000011" 
 		
 		# Restoration of the old policies
-		government = absolute_monarchy
+		government = theocracy
 		ruling_party_ideology = reactionary
 		political_reform = none_voting
 		political_reform = appointed
@@ -158,7 +154,6 @@ country_event = {
 	option = {
 		name = "EVTOPTA100000012".
 
-		
 		casus_belli = {
 			target = PAP
 			type = reinstall_papacy_cb
