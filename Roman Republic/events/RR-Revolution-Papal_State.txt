@@ -148,6 +148,10 @@ country_event = {
 		}
 		
 		sphere_owner = {
+			relation = {
+				target = PAP
+				value = -100
+			}
 			diplomatic_influence = {
 				who = this
 				value = -200
