@@ -148,3 +148,4 @@ unit_names = {
 	Azzardoso Beroldo 	Colombo Daino Eridano Euridice Falco Favorita Nereide Patrona Serpente Tritone Veloce Vigilante Zeffiro 
 		
 	}
+}

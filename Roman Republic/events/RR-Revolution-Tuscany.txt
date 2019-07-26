@@ -1,3 +1,19 @@
+###########################
+#
+# Tuscany Events
+# Reserved ID's: 100000021-10000050
+#
+###########################
+#
+# >Tuscan Riots - 21
+# >Tuscan Revolution - 22
+# 	>Duke Flees
+#		>Republic Accepts - 
+#		>Republic Declines - 
+#	>Duke Concedes
+#	>Duke Defiant
+#
+###########################
 # EventID = 100000021
 # Tuscan Riots
 country_event = {
@@ -8,19 +24,18 @@ country_event = {
 	
 	trigger = {
 		tag = TUS
+		NOT = {
+			government = democracy
+		}
 		PAP = {
-			has_country_flag = run_pope_run
+			has_country_flag = rr_1848republic
 		}
 	}
 	
-	fire_only_once = yes
-	
-	mean_time_to_happen =  {
-		months = 1
-	}
+	is_triggered_only = yes
 	
 	immediate = {
-		set_country_flag = tuscan_riots
+		set_country_flag = rr_tuscan_riots
 	}
 	
 	option = {
@@ -61,6 +76,11 @@ country_event = {
 			}
 		}
 		
+		country_event = {
+			id = 100000022
+			days = 180
+		}
+		
 		ai_chance = {
 			factor = 1
 		}
@@ -77,17 +97,13 @@ country_event = {
 	
 	trigger = {
 		tag = TUS
-		has_country_flag = tuscan_riots
+		has_country_flag = rr_tuscan_riots
 		PAP = {
-			has_country_flag = run_pope_run
+			has_country_flag = rr_1848republic
 		}
 	}
 	
-	fire_only_once = yes
-	
-	mean_time_to_happen = {
-		months = 6 
-	}
+	is_triggered_only = yes
 	
 	# The Duke Flees - Leopold flees to Gaeta and the liberals establish a national assembly. Their first action is to reform the government and petition the Roman Republic for statehood.
 	option = {
@@ -110,21 +126,37 @@ country_event = {
 		political_reform = free_press
 		nationalvalue = nv_equality
 		
-		# Give the former sphere owner a casus belli 
+		# Remove existing relations
+		any_country = {
+			limit = {
+				alliance_with = THIS
+			}
+			
+			leave_alliance = THIS
+		}
+		
+		# Remove Tuscany from sphere
 		sphere_owner = {
+			set_country_flag = rr_former_TUS_owner
+			diplomatic_influence = {
+				who = this
+				value = -150
+			}
+		}
+		
+		# Give the former sphere owner a casus belli 
+		any_country = {
+			limit = {
+				has_country_flag = rr_former_TUS_owner
+			}
+			
 			casus_belli = {
 				target = THIS
 				type = add_to_sphere
 				months = 12
 			}
-		}
-		
-		# Remove Tuscany from sphere
-		sphere_owner = {
-			diplomatic_influence = {
-				who = this
-				value = -150
-			}
+			
+			clr_country_flag = rr_former_TUS_owner
 		}
 		
 		# Remove all alliances and release all puppets
@@ -330,6 +362,13 @@ country_event = {
 		create_vassal = TUS
 		
 		# Give Austria a casus belli to release their cousin's dukedom
+		AUS = {
+			casus_belli = {
+				target = PAP
+				type = release_puppet
+				months = 12
+			}
+		}
 		
 		# All pops in non-colonial states,
 		any_pop = {
@@ -482,14 +521,15 @@ country_event = {
 			war = {
 				target = PAP
 			
-				# The Republic will make a puppet of Tuscany
+			
+				# Tuscany will reinstall the Papacy
 				attacker_goal = {
 					casus_belli = reinstall_papacy_cb
 				}
-			
-				# Tuscany will reinstall the Papacy
+				
+				# The Republic will install democracy in Tuscany
 				defender_goal = {
-					casus_belli = make_puppet
+					casus_belli = install_democracy
 				}
 			
 				# Do not call allies into this conflict
@@ -592,19 +632,23 @@ country_event = {
 			war = {
 				target = PAP
 			
-				# The Republic will make a puppet of Tuscany
+				# Tuscany will reinstall the Papacy
 				attacker_goal = {
 					casus_belli = reinstall_papacy_cb
 				}
-			
-				# Tuscany will reinstall the Papacy
+				
+				# The Republic will install democracy in Tuscany
 				defender_goal = {
-					casus_belli = make_puppet
+					casus_belli = install_democracy
 				}
 			
 				# Do not call allies into this conflict
 				call_ally = no
 			}
+		}
+		
+		745 = {
+			change_controller = PAP
 		}
 		
 		# Any pops in non-colonial state,
@@ -1014,15 +1058,12 @@ country_event = {
 		
 		# Make sure PAP is currently the Roman Republic
 		PAP = {
-			has_country_flag = run_pope_run
+			has_country_flag = rr_1848republic
 		}
 		
 		# Make sure they have recently lost the war against the Republic, but are not currently a democracy
+		truce_with = PAP
 		has_recently_lost_war = yes
-		NOT = {
-			government = democracy
-			war_with = PAP
-		}
 	}
 	
 	fire_only_once = yes
@@ -1042,6 +1083,11 @@ country_event = {
 		social_reform = low_schools
 		nationalvalue = nv_equality
 		
+		# Make Tuscany a puppet of the republic
+		PAP = {
+			create_vassal = TUS
+		}
+		
 		# All pops in non-colonial states,
 		any_pop = {
 			limit = {
@@ -1053,7 +1099,7 @@ country_event = {
 			# Decrease Liberal militancy and consciousness
 			scaled_militancy = {
 				ideology = liberal
-				factor = -1
+				factor = -5
 			}
 		}
 		
@@ -1223,3 +1269,8 @@ country_event = {
 		}
 	}
 }
+	
+
+
+
+

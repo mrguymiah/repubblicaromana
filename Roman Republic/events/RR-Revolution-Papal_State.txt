@@ -2,10 +2,17 @@
 ### Events about the Roman Revolution
 ### 
 ### EventID's 
-### 100000000			| Kicker Event
-### 100000001-100000007	| Tuscan Revolution
-### 100000011-100000012 | Foreign Response to Roman Republic
-
+### 100000000			| 1848 Revolution
+### 100000021-100000050	| Tuscan Revolution
+### 100000051-100000080 | Romagna Autonomy
+### 100000011-100000020 | Foreign Response to Roman Republic
+### 100000081-100000100 | Deposed Papacy
+###########################
+#
+# Papal Revolution
+# Reserved ID's: 100000000-100000010
+#
+###########################
 # EventID = 100000000
 # Assassination of Pellegrino Rossi
 country_event = {
@@ -54,12 +61,220 @@ country_event = {
 	}
 	
 	option = {
+		# Clear the HPM Flag.
+		clr_country_flag = theocratic_government
+		
+		# Set the Flag
+		set_country_flag = rr_1848republic
+		set_country_flag = rr_rossi_dead
+	
+		# Change the Government
+		government = democracy
+		ruling_party_ideology = liberal
+		political_reform = universal_voting
+		political_reform = population_equal_weight
+		political_reform = proportional_representation
+		political_reform = yes_meeting
+		political_reform = free_press
+		social_reform = low_schools
+		nationalvalue = nv_equality
+		
+		any_country = {
+			limit = {
+				religion = catholic
+				OR = {
+					religious_policy = moralism
+					religious_policy = pluralism
+				}
+			}
+			
+			relation = {
+				who = PAP
+				value = -50
+			}
+		}
+		
+		any_country = {
+			limit = {
+				culture_group = italian
+				government = democracy
+			}
+			
+			relation = {
+				who = PAP
+				value = 100
+			}
+		}
+		
+		any_country = {
+			limit = {
+				OR = {
+					religious_policy = secularized
+					religious_policy = pro_atheism
+					AND = {
+						OR = {
+							government = democracy
+							AND = {
+								government = hms_government
+								OR = {
+									ideology = liberal
+									ideology = socialist
+								}
+							}
+						}
+						capital_scope = { 
+							OR = {
+								continent = europe
+								continent = north_america
+							}
+						}
+					}
+				}
+			}
+			
+			relation = {
+				who = PAP
+				value = 50
+			}
+		}
+		
+		# Remove existing relations
+		any_country = {
+			limit = {
+				alliance_with = PAP
+			}
+			
+			leave_alliance = PAP
+		}
+		
+		sphere_owner = {
+			diplomatic_influence = {
+				who = this
+				value = -200
+			}
+		}
+		
+		# Allow Great Power Catholics to declare war for the Pope's Restoration
+		any_country = {
+			limit = {
+				OR = {
+					AND = {
+						is_greater_power = yes
+						religion = catholic
+						capital_scope = { continent = europe }
+					}
+				}
+			}
+			
+			country_event = 100000012
+		}
+		
+		any_country = {
+			limit = {
+				owns = 2567
+				religion = catholic
+			}
+				
+			country_event = 100000013
+		}
+		
+			
+		any_pop = {
+			limit = {
+				location= {
+					is_colonial = no
+				}
+				OR = {
+					strata = poor
+					strata = middle
+				}
+			}
+			
+			ideology = {
+				value = liberal
+				factor = 0.2
+			}
+		}
+		
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+				strata = rich
+			}
+			
+			ideology = {
+				value = reactionary
+				factor = 0.1
+			}
+		}
+		
+		# Can't please everyone
+		any_pop = {
+			limit = {
+				location= {
+					is_colonial = no
+				}
+			}
+			
+			scaled_militancy = {
+				ideology = liberal
+				factor = -8
+			}
+		
+			scaled_militancy = {
+				ideology = conservative
+				factor = 3
+			}				
+			scaled_militancy = {
+				ideology = reactionary
+				factor = 4
+			}
+		}
+	
+		any_province = {
+			limit = {
+				has_province_modifier = rr_temporal_papacy_prov
+			}
+			
+			remove_province_modifier = rr_temporal_papacy_prov
+		}
+		
+		remove_country_modifier = rr_temporal_papacy_nat
+		
+		any_country = {
+			limit = {
+				exists = yes
+				tag = TUS
+			}
+			
+			country_event = {
+				id = 100000021
+				months = 1
+			}
+		}
+		
+		ai_chance = {
+			factor = 30
+			
+			#modifier = {
+			#	factor = 0
+			#	
+			#}
+		}
+	}
+	option = {
 		name = "EVTOPTA100000000"
 		
 		any_pop = {
 			limit = {
 				location= {
 					is_colonial = no
+				}
+				OR = {
+					strata = poor
+					strata = middle
 				}
 			}
 			
@@ -70,7 +285,23 @@ country_event = {
 			militancy = 4
 		}
 		
-		set_country_flag = rossi_dead
+		any_pop = {
+			limit = {
+				location = {
+					is_colonial = no
+				}
+				strata = rich
+			}
+			
+			ideology = {
+				value = reactionary
+				factor = 0.1
+			}
+		}
+		
+		ai_chance = {
+			factor = 30
+		}
 	}
 }
 
@@ -110,6 +341,12 @@ country_event = {
 		social_reform = no_schools
 		nationalvalue = nv_order
 		
+		# Give the Legion Modifier
+		add_country_modifier = {
+			name = rr_temporal_papacy_nat
+			duration = -1
+		}
+		
 		# Mixed Reactions
 		any_pop = {
 			limit = {
@@ -137,13 +374,13 @@ country_event = {
 		# Garibaldi will not support the Pope
 		# kill_leader = "Guiseppe Garibaldi"
 		
-		set_country_flag = pope_restored
-		clr_country_flag = run_pope_run
+		set_country_flag = rr_pope_restored
+		clr_country_flag = rr_1848republic
 	}
 }
 
 # EventID = 100000012
-# Casus Belli to restore the Pope
+# Casus Belli to restore the Pope. Sent to all GP Catholic nations in Europe.
 country_event = {
 	id = 100000012
 	title = "EVTNAME100000012"
@@ -152,7 +389,7 @@ country_event = {
 	is_triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA100000012".
+		name = "EVTOPTA100000012"
 
 		casus_belli = {
 			target = PAP
@@ -182,4 +419,69 @@ country_event = {
 		}
 	}
 }
+
+# EventID = 100000013
+# Sicily Informed of the Papacy's residence in Gaeta
+country_event = {
+	id = 100000013
+	title = "EVTNAME100000013"
+	desc = "EVTDESC100000013"
 	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA100000013"
+
+		casus_belli = {
+			target = PAP
+			type = reinstall_papacy_cb
+			months = 12
+		}
+		
+		2567 = {
+			add_province_modifier = {
+				name = rr_papal_residence
+				duration = -1
+			}
+		}
+		
+		any_pop = {
+			limit = {
+				religion = catholic
+			}
+			militancy = -2
+			consciousness = -1
+		}
+		
+		ai_chance = {
+			factor = 70
+		}
+	}
+	
+	option = {
+		name = "EVTOPTB100000013"
+		
+		2567 = {
+			add_province_modifier = {
+				name = rr_papal_residence
+				duration = -1
+			}
+		}
+		
+		any_pop = {
+			limit = {
+				religion = catholic
+			}
+			militancy = -1
+			consciousness 2
+		}
+		
+		ai_chance = {
+			factor = 30
+			modifier = {
+				factor = 50
+				militancy = 5
+			}
+		}
+	}
+}
